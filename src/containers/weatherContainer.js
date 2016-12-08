@@ -2,27 +2,34 @@ require ('./weatherContainer.scss');
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCard } from '../actions/index'
+import { addCard } from '../actions/index';
 
 import CardClear from './cards/cardClear';
 import CardRain from './cards/CardRain';
 
 class WeatherContainer extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = { term: '' };
-  }
-
-  onChange(event) {
-    this.setState({term: event.target.value});
-  }
 
   onKeyEnter(event) {
     if(event.charCode==13){
-      this.props.addCard(this.state.term);
-      console.log(this.props.cities);
-      this.setState({term: ''});
+      this.props.addCard(event.target.value);
+      event.currentTarget.value = "";
+    }
+  }
+
+  cityCard (cityData) {
+    const weatherMain = cityData.list["0"].weather["0"].main;
+
+    if(!cityData) {
+      return <div></div>
+    } else {
+      switch (weatherMain) {
+        case 'Clear':
+            return <CardClear key={cityData.city.id} name={cityData.city.name} />
+        case 'Rain':
+            return <CardRain key={cityData.city.id} name={cityData.city.name} />
+        default:
+          console.log("Weather case : " + weatherMain + " doesn't exist atm");
+      }
     }
   }
 
@@ -34,14 +41,12 @@ class WeatherContainer extends Component {
             <input
             type="text"
             maxLength="20"
-            value={this.state.term}
-            onChange={this.onChange.bind(this)}
             onKeyPress={this.onKeyEnter.bind(this)} />
           </label>
         </div>
 
         <ul className="cards">
-          <CardClear />
+          {this.props.cities.map(this.cityCard)}
           <CardRain />
         </ul>
       </div>

@@ -3,11 +3,15 @@ require('./cardRain.scss');
 import React, { Component } from 'react';
 
 class CardRain extends Component {
+  constructor(props) {
+    super(props);
+  }
+  
   render () {
     return (
       <li className="card">
             <div className="card-title">
-              <h5>berlin</h5>
+              <h5>{this.props.name}</h5>
               <span>Mon, 5AM</span>
             </div>
             <div className="card-deco">
