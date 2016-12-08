@@ -14,9 +14,15 @@ class WeatherContainer extends Component {
     this.state = { term: '' };
   }
 
-  handleKeyPress(target) {
-    if(target.charCode==13){
-            alert('Enter clicked!!!');
+  onChange(event) {
+    this.setState({term: event.target.value});
+  }
+
+  onKeyEnter(event) {
+    if(event.charCode==13){
+      this.props.addCard(this.state.term);
+      console.log(this.props.cities);
+      this.setState({term: ''});
     }
   }
 
@@ -25,7 +31,12 @@ class WeatherContainer extends Component {
       <div>
         <div className="inputs">
           <label className="input_icon">
-            <input  type="text" maxLength="20" onKeyPress={this.handleKeyPress} />
+            <input
+            type="text"
+            maxLength="20"
+            value={this.state.term}
+            onChange={this.onChange.bind(this)}
+            onKeyPress={this.onKeyEnter.bind(this)} />
           </label>
         </div>
 
@@ -38,4 +49,10 @@ class WeatherContainer extends Component {
   }
 }
 
-export default connect(null, { addCard }) (WeatherContainer);
+function mapStateToProps (state) {
+  return {
+    cities: state.cities
+  }
+}
+
+export default connect(mapStateToProps, { addCard }) (WeatherContainer);
