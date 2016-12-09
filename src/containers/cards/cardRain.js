@@ -6,13 +6,13 @@ class CardRain extends Component {
   constructor(props) {
     super(props);
   }
-  
+
   render () {
     return (
       <li className="card">
             <div className="card-title">
               <h5>{this.props.name}</h5>
-              <span>Mon, 5AM</span>
+              <span>{this.props.time}</span>
             </div>
             <div className="card-deco">
               <div className="card-cloud">
@@ -45,14 +45,14 @@ class CardRain extends Component {
 
               </div>
               <div className="card-temp">
-                25
+                {this.props.temp}
               </div>
             </div>
             <div className="card-next">
               <ul>
-                <li>TUES ICON 25°/32°</li>
-                <li>TUES ICON 25°/32°</li>
-                <li>TUES ICON 25°/32°</li>
+              <li>{this.props.dayOne} {this.props.dayOneWeather} {this.props.dayOneTempMin}°/{this.props.dayOneTempMax}°</li>
+              <li>{this.props.dayTwo} {this.props.dayTwoWeather}  {this.props.dayTwoTempMin}°/{this.props.dayTwoTempMax}°</li>
+              <li>{this.props.dayThree} {this.props.dayThreeWeather}  {this.props.dayThreeTempMin}°/{this.props.dayThreeTempMax}°</li>
               </ul>
             </div>
           </li>
