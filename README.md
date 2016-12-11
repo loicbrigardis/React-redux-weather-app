@@ -1,6 +1,7 @@
 # WeatherApp React-Redux
 
 WeatherApp with ReactJs & Redux
+React Animation
 Webpack
 Scss
 ES6 babel
