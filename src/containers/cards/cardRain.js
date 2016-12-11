@@ -11,8 +11,8 @@ class CardRain extends Component {
     return (
       <li className="card">
             <div className="card-title">
-              <h5>{this.props.name}</h5>
-              <span>{this.props.time}</span>
+            <h5>{this.props.citydata.name}</h5>
+            <span>{this.props.citydata.time}</span>
             </div>
             <div className="card-deco">
               <div className="card-cloud">
@@ -45,14 +45,14 @@ class CardRain extends Component {
 
               </div>
               <div className="card-temp">
-                {this.props.temp}
+              {this.props.citydata.temp}
               </div>
             </div>
             <div className="card-next">
               <ul>
-              <li>{this.props.dayOne} {this.props.dayOneWeather} {this.props.dayOneTempMin}°/{this.props.dayOneTempMax}°</li>
-              <li>{this.props.dayTwo} {this.props.dayTwoWeather}  {this.props.dayTwoTempMin}°/{this.props.dayTwoTempMax}°</li>
-              <li>{this.props.dayThree} {this.props.dayThreeWeather}  {this.props.dayThreeTempMin}°/{this.props.dayThreeTempMax}°</li>
+              <li>{this.props.citydata.dayOne} {this.props.citydata.dayOneWeather} {this.props.citydata.dayOneTempMin}°/{this.props.citydata.dayOneTempMax}°</li>
+              <li>{this.props.citydata.dayTwo} {this.props.citydata.dayTwoWeather} {this.props.citydata.dayTwoTempMin}°/{this.props.citydata.dayTwoTempMax}°</li>
+              <li>{this.props.citydata.dayThree} {this.props.citydata.dayThreeWeather} {this.props.citydata.dayThreeTempMin}°/{this.props.citydata.dayThreeTempMax}°</li>
               </ul>
             </div>
           </li>

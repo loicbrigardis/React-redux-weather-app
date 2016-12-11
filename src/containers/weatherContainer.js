@@ -2,6 +2,7 @@ require ('./weatherContainer.scss');
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { addCard } from '../actions/index';
 import moment from 'moment';
 
@@ -23,18 +24,37 @@ class WeatherContainer extends Component {
     const temp = Math.round(cityData.list["0"].main.temp - 273.15, 1);
     const timeStamp = Date.parse(cityData.list["0"].dt_txt);
     const time = moment(timeStamp).format("DD/MM/YYYY HH:mm");
-    const dayOne = dayNumberToName(moment().day() + 1);
-    const dayTwo = dayNumberToName(moment().day() + 2);
-    const dayThree = dayNumberToName(moment().day() + 3);
-    const dayOneWeather = cityData.list[8].weather["0"].main;
-    const dayOneTempMin = Math.round(cityData.list[8].main.temp_min - 273.15);
-    const dayOneTempMax = Math.round(cityData.list[8].main.temp_max - 273.15);
-    const dayTwoWeather = cityData.list[18].weather["0"].main;
-    const dayTwoTempMin = Math.round(cityData.list[8].main.temp_min - 273.15);
-    const dayTwoTempMax = Math.round(cityData.list[8].main.temp_max - 273.15);
-    const dayThreeWeather = cityData.list[26].weather["0"].main;
-    const dayThreeTempMin = Math.round(cityData.list[8].main.temp_min - 273.15);
-    const dayThreeTempMax = Math.round(cityData.list[8].main.temp_max - 273.15);
+    const dayOne = fetchTemp(1, "day");
+    const dayTwo = fetchTemp(2, "day");
+    const dayThree = fetchTemp(3, "day");
+    const dayOneWeather = fetchTemp(8, "weather");
+    const dayOneTempMin = fetchTemp(8, "min");
+    const dayOneTempMax = fetchTemp(8, "max");
+    const dayTwoWeather = fetchTemp(18, "weather");
+    const dayTwoTempMin = fetchTemp(18, "min");
+    const dayTwoTempMax = fetchTemp(18, "max");
+    const dayThreeWeather = fetchTemp(26, "weather");
+    const dayThreeTempMin = fetchTemp(26, "min");
+    const dayThreeTempMax = fetchTemp(26, "min");
+
+    const citydata = {name, temp, time, dayOne, dayTwo, dayThree,
+      dayOneWeather, dayTwoWeather, dayThreeWeather, dayOneTempMin,
+      dayOneTempMax, dayTwoTempMin, dayTwoTempMax, dayThreeTempMin, dayThreeTempMax};
+
+    function fetchTemp (weekNumber, value) {
+      switch (value) {
+        case "min":
+            return Math.round(cityData.list[weekNumber].main.temp_min - 273.15);
+        case "max":
+            return Math.round(cityData.list[weekNumber].main.temp_max - 273.15);
+        case "weather":
+            return cityData.list[weekNumber].weather["0"].main;
+        case "day":
+            return dayNumberToName(moment().day() + [weekNumber]);
+        default:
+          return false;
+      }
+    }
 
     function dayNumberToName (dayNumber) {
       let day;
@@ -53,23 +73,15 @@ class WeatherContainer extends Component {
       return day;
     }
 
-    console.log(cityData);
-
-    function cityProps () {
-
-    }
-
     if(!cityData) {
       return <div></div>
     } else {
       switch (weatherMain) {
         case 'Clear':
-            return <CardClear key={cityData.city.id} name={name} dayOne={dayOne} dayTwo={dayTwo} dayThree={dayThree} dayOneWeather={dayOneWeather} dayTwoWeather={dayTwoWeather} dayThreeWeather={dayThreeWeather} dayOneTempMin={dayOneTempMin} dayOneTempMax={dayOneTempMax} dayTwoTempMin={dayTwoTempMin} dayTwoTempMax={dayTwoTempMax} dayThreeTempMin={dayThreeTempMin} dayThreeTempMax={dayThreeTempMax}
- temp={temp} time={time} />
+            return <CardClear key={cityData.city.id} citydata={citydata} />
         case 'Rain':
         case 'Clouds':
-            return <CardRain key={cityData.city.id} name={name} dayOne={dayOne} dayTwo={dayTwo} dayThree={dayThree} dayOneWeather={dayOneWeather} dayTwoWeather={dayTwoWeather} dayThreeWeather={dayThreeWeather} dayOneTempMin={dayOneTempMin} dayOneTempMax={dayOneTempMax} dayTwoTempMin={dayTwoTempMin} dayTwoTempMax={dayTwoTempMax} dayThreeTempMin={dayThreeTempMin} dayThreeTempMax={dayThreeTempMax}
- temp={temp} time={time} />
+            return <CardRain key={cityData.city.id} citydata={citydata} />
         default:
           console.log("Weather case : " + weatherMain + " doesn't exist atm");
       }
@@ -77,6 +89,12 @@ class WeatherContainer extends Component {
   }
 
   render () {
+    const transitionOptions = {
+      transitionName:"fade",
+      transitionEnterTimeout:500,
+      transitionLeaveTimeout:300
+    }
+
     return (
       <div>
         <div className="inputs">
@@ -88,8 +106,10 @@ class WeatherContainer extends Component {
           </label>
         </div>
 
-        <ul className="cards">
+        <ul>
+          <ReactCSSTransitionGroup className="cards" {...transitionOptions}>
           {this.props.cities.map(this.cityCard)}
+          </ReactCSSTransitionGroup>
         </ul>
       </div>
     )

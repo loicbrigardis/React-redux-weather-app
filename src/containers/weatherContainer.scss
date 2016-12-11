@@ -44,3 +44,14 @@ input[type=text]:focus {
 .input_icon:hover:before {
   content: "\f00e";
 }
+
+.fade-enter {
+  opacity: 0;
+  transform:translateY(-150px);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform:translateY(0px);
+  transition: all 500ms ease-in;
+}
